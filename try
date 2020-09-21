@@ -95,21 +95,17 @@ class OpenSimplexNoise():
         seedFile.write(2 * "\n" + str(self.seed))
         seedFile.close()
 
-    def AddColorValue(self):
-        for j in range(len(self.noiseArray)):
-            for i in range(len(self.noiseArray[j])):
-                if num < 125:
-                    img.putpixel( (i,j), numberToGreyColor( int(self.noiseArray[j][i]), (0,0,77) ) )
-
     def savImgcolour(self):
         '''This method generates a PNG image using the noiseArray and saves it'''
-        img = Image.new('RGBA', (self.width, self.height))
-
+        img1 = Image.new('RGBA', (self.width, self.height))
+        deep_blue = ((0, 0, 77), 255)
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                img.putpixel( (i,j), AddColorValue( int(self.noiseArray[j][i]), 255 ) )
-
-        img.save(str(self.name) + '.png')
+                if num < 255:
+                    print("el loop funca")
+                    img1.putpixel((i,j), deep_blue )
+                    img1.save('noise.png')
+                
 
 
 
@@ -119,6 +115,6 @@ if __name__ == "__main__":
     noiseTest.generateNoiseArray()
     noiseTest.mapArbValueToColorValue()
     noiseTest.saveAsPNG()
-    noiseTest.AddColorValue()
     noiseTest.savImgcolour()
     noiseTest.saveSeedAsTxtFile()
+
