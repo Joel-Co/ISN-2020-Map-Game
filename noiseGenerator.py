@@ -64,7 +64,7 @@ class OpenSimplexNoise():
         '''
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                num = round(255 / 2 * self.noiseArray[j][i] + 255 / 2)
+                num = round(255 / 3 * self.noiseArray[j][i])  #+ 255/2)
                 if num > 255:
                     num = 255
                 if num < 0:
