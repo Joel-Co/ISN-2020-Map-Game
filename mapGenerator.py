@@ -10,6 +10,10 @@ def numberToGreyColor(num, transparence):
     with a given transparence'''
     return (num, num, num, transparence)
 
+noise = OpenSimplexNoise("noiseTest", 100, 100, 3, 5)
+noise.generateNoiseArray()
+noise.mapArbValueToColorValue()
+
 
 class OpenSimplexNoise():
     '''Class meant to store a noise array and all the methods related to it'''
@@ -122,9 +126,6 @@ class OpenSimplexNoise():
                     img1.putpixel((i,j), snow)   
                  
         img1.save('map.png')
-        print("el loop funca")        
-
-
 
 #Test
 if __name__ == "__main__":
@@ -134,3 +135,4 @@ if __name__ == "__main__":
     noiseTest.saveAsPNG()
     noiseTest.savImgcolour()
     noiseTest.saveSeedAsTxtFile()
+
