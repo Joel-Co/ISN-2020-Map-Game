@@ -10,10 +10,6 @@ def numberToGreyColor(num, transparence):
     with a given transparence'''
     return (num, num, num, transparence)
 
-noise = OpenSimplexNoise("noiseTest", 100, 100, 3, 5)
-noise.generateNoiseArray()
-noise.mapArbValueToColorValue()
-
 
 class OpenSimplexNoise():
     '''Class meant to store a noise array and all the methods related to it'''
@@ -52,8 +48,8 @@ class OpenSimplexNoise():
                 #The four lines represent the noise value superimposed to make more complex noise
                 #Edit this to change the noise's appearance
                 self.noiseArray[y][x] = self.originalNoiseObject.noise2d(self.freq*nx, self.freq*ny) + \
-                                    0.5 * self.originalNoiseObject.noise2d(2*self.freq*nx, 2*self.freq*ny) + \
-                                    0.25 * self.originalNoiseObject.noise2d(4*self.freq*nx, 4*self.freq*ny) + \
+                                    0.5 * self.originalNoiseObject.noise2d(2*self.freq*nx, 2*self.freq*ny)+ \
+                                    0.25 * self.originalNoiseObject.noise2d(4*self.freq*nx, 4*self.freq*ny)+ \
                                     0.125 * self.originalNoiseObject.noise2d(8*self.freq*nx, 8*self.freq*ny)
         
     def mapArbValueToColorValue(self):
@@ -65,7 +61,8 @@ class OpenSimplexNoise():
         '''
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                num = round(255 / 2 * self.noiseArray[j][i])
+                global num
+                num = round(255 / 2 * self.noiseArray[j][i] + 255 / 2)
                 if num > 255:
                     num = 255
                 if num < 0:
@@ -101,35 +98,20 @@ class OpenSimplexNoise():
     def savImgcolour(self):
         '''This method generates a PNG image using the noiseArray and saves it'''
         img1 = Image.new('RGBA', (self.width, self.height))
-        deep_blue =(0, 0, 77)
-        blue = (0, 168, 255)
-        sand = (255, 233, 123)
-        greeny = (162, 188, 0) 
-        dark_green = (0, 67, 0)
-        mountain = (90, 90, 90)
-        snow = (255, 255, 255)
+        deep_blue = ((0, 0, 77), 255)
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                if self.noiseArray[i][j] <= 5:
-                    img1.putpixel((i,j), deep_blue)
-                elif self.noiseArray[i][j] <= 20:
-                    img1.putpixel((i,j), blue)
-                elif self.noiseArray[i][j] <= 30:
-                    img1.putpixel((i,j), sand)
-                elif self.noiseArray[i][j] <= 60:
-                    img1.putpixel((i,j), greeny)
-                elif self.noiseArray[i][j] <= 120:
-                    img1.putpixel((i,j), dark_green)
-                elif self.noiseArray[i][j] <= 149:
-                    img1.putpixel((i,j), mountain)
-                elif self.noiseArray[i][j] == 150:
-                    img1.putpixel((i,j), snow)   
-                 
-        img1.save('map.png')
+                if num < 255:
+                    print("el loop funca")
+                    img1.putpixel((i,j), deep_blue )
+                    img1.save('noise.png')
+                
+
+
 
 #Test
 if __name__ == "__main__":
-    noiseTest = OpenSimplexNoise("noiseTest", 500, 500, 3, 5)
+    noiseTest = OpenSimplexNoise("noiseTest", 100, 100, 7, 5)
     noiseTest.generateNoiseArray()
     noiseTest.mapArbValueToColorValue()
     noiseTest.saveAsPNG()
