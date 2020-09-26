@@ -1,3 +1,8 @@
+'''
+This program uses the OpenSimplexNoise class to make a Map class that
+additionally has a createAndSaveMapAsPNG method
+'''
+
 import pygame
 from opensimplex import OpenSimplex
 import numpy as np
@@ -8,33 +13,17 @@ from noiseGenerator import *
 
 
 class Map(OpenSimplexNoise):
-    '''Class meant to store a noise array and all the methods related to it'''
+    '''Class used for creating a noise list using methods from OpenSimplexNoise
+        to create a map and save it as a PNG
+    '''
 
     def __init__(self, name, width, height, frequency, seed = None):
-        #OpenSimplexNoise.__init__(self, name, width, height, frequency, seed = None)
+        OpenSimplexNoise.__init__(self, name, width, height, frequency, seed)
 
-        self.name = name
-        self.width = width
-        self.height = height
-        self.freq = frequency
-        self.seed = seed
-
-        #If it is not given, generates and stores the seed
-        #Used to generate the noise array.
-        if self.seed == None:
-            self.seed = random.randint(1, 500)
-
-        #Initialises the noise object using the opensimplex library using the seed
-        self.originalNoiseObject = OpenSimplex(seed)
-
-        #Array to store the values we will be using
-        #We chose numpy  to learn how to use it and because it is
-        #apparently a better choice
-        self.noiseArray = np.empty([width, height])
-
-
-    def createAndSaveMapAsPNG(self):
-        '''This method generates a PNG image using the noiseArray and saves it'''
+    def createAndSaveMapAsPNG(self, path):
+        '''This method generates a color PNG image that looks like a map
+            using the noiseArray and saves it
+        '''
 
         deep_blue = (0, 0, 77)
         blue = (0, 168, 255)
@@ -64,13 +53,13 @@ class Map(OpenSimplexNoise):
                 elif self.noiseArray[i][j] >= 150:
                     img1.putpixel((i,j), snow)
 
-        img1.save('map.png')
-
+        img1.save(path + self.name + '.png')
+        
 #Test
 if __name__ == "__main__":
-    noiseTest = Map("mapTest", 500, 500, 3, 5)
-    noiseTest.generateNoiseArray()
-    noiseTest.mapArbValueToColorValue()
-    noiseTest.createAndSaveMapAsPNG()
-    noiseTest.saveSeedAsTxtFile()
+    mapTest = Map("mapTest", 500, 500, 3, 5)
+    mapTest.generateNoiseArray()
+    mapTest.mapArbValueToColorValue()
+    mapTest.createAndSaveMapAsPNG('gameImages\ ')
+    mapTest.saveSeedAsTxtFile()
 

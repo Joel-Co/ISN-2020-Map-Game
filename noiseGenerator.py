@@ -30,7 +30,8 @@ class OpenSimplexNoise():
             self.seed = random.randint(1, 500)
 
         #Initialises the noise object using the opensimplex library using the seed
-        self.originalNoiseObject = OpenSimplex(seed)
+
+        self.originalNoiseObject = OpenSimplex(self.seed)
 
         #Array to store the values we will be using
         #We chose numpy  to learn how to use it and because it is
@@ -81,7 +82,7 @@ class OpenSimplexNoise():
                 pygame.draw.rect(display,(self.noiseArray[0][j][i], self.noiseArray[0][j][i], \
                 self.noiseArray[0][j][i]),(x + i * scale , y + j * scale, scale, scale))
 
-    def saveAsPNG(self):
+    def saveAsPNG(self, path = ""):
         '''This method generates a PNG image using the noiseArray and saves it'''
         img = Image.new('RGBA', (self.width, self.height))
 
@@ -89,20 +90,20 @@ class OpenSimplexNoise():
             for i in range(len(self.noiseArray[j])):
                 img.putpixel( (i,j), numberToGreyColor( int(self.noiseArray[j][i]), 255 ) )
 
-        img.save(str(self.name) + '.png')
+        img.save(path + str(self.name) + '.png')
 
-    def saveSeedAsTxtFile(self):
+    def saveSeedAsTxtFile(self, path = ""):
         '''This method saves the seed in a txt file to use it later'''
-        seedFile = open(str(self.name) + ".txt" , "a")
+        seedFile = open(path + str(self.name) + ".txt" , "a")
         seedFile.write(2 * "\n" + str(self.seed))
         seedFile.close()
 
 #Test
 if __name__ == "__main__":
-    noiseTest = OpenSimplexNoise("noiseTest", 100, 100, 3, 5)
+    noiseTest = OpenSimplexNoise("noiseTest", 100, 100, 3)
     noiseTest.generateNoiseArray()
     noiseTest.mapArbValueToColorValue()
-    noiseTest.saveAsPNG()
-    noiseTest.saveSeedAsTxtFile()
+    noiseTest.saveAsPNG('gameImages\ ')
+    noiseTest.saveSeedAsTxtFile('seeds\ ')
 
 
