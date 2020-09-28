@@ -17,8 +17,8 @@ class Map(OpenSimplexNoise):
         to create a map and save it as a PNG
     '''
 
-    def __init__(self, name, width, height, frequency, seed = None):
-        OpenSimplexNoise.__init__(self, name, width, height, frequency, seed)
+    def __init__(self, name, width, height, frequency, octaves, seed = None):
+        OpenSimplexNoise.__init__(self, name, width, height, frequency, octaves, seed)
 
     def createAndSaveMapAsPNG(self, path):
         '''This method generates a color PNG image that looks like a map
@@ -32,34 +32,39 @@ class Map(OpenSimplexNoise):
         dark_green = (0, 67, 0)
         mountain = (90, 90, 90)
         snow = (255, 255, 255)
-
-        img1 = Image.new('RGBA', (self.width, self.height))
-        
+                
+        img = Image.new('RGBA', (self.width, self.height))
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                #print(self.noiseArray[i][j])
-                if self.noiseArray[i][j] <= 5:
-                    img1.putpixel((i,j), deep_blue)
-                elif self.noiseArray[i][j] <= 20:
-                    img1.putpixel((i,j), blue)
-                elif self.noiseArray[i][j] <= 30:
-                    img1.putpixel((i,j), sand)
-                elif self.noiseArray[i][j] <= 60:
-                    img1.putpixel((i,j), greeny)
-                elif self.noiseArray[i][j] <= 120:
-                    img1.putpixel((i,j), dark_green)
-                elif self.noiseArray[i][j] <= 149:
-                    img1.putpixel((i,j), mountain)
-                elif self.noiseArray[i][j] >= 150:
-                    img1.putpixel((i,j), snow)
 
-        img1.save(path + self.name + '.png')
-        
+                if self.noiseArray[j][i] <= 45:
+                    img.putpixel((i, j), deep_blue)
+                elif self.noiseArray[j][i] <= 69:
+                    img.putpixel((i, j), blue)
+                elif self.noiseArray[j][i] <= 81:
+                    img.putpixel((i, j), sand)
+                elif self.noiseArray[j][i] <= 120:
+                    img.putpixel((i, j), greeny)
+                elif self.noiseArray[j][i] <= 170:
+                    img.putpixel((i, j), dark_green)
+                elif self.noiseArray[j][i] <= 209:
+                    img.putpixel((i, j), mountain)
+                elif self.noiseArray[j][i] >= 210:
+                    img.putpixel((i, j), snow)
+
+        img.save(path + self.name + '_map.png')
+
+octaves = {1 : 1,
+    2 : 0.5,
+    4 : 0.25,
+    8 : 0.125}
+
 #Test only if this file is run and not imported
 if __name__ == "__main__":
-    mapTest = Map("mapTest", 500, 500, 3, 5)
+    mapTest = Map("mapTest", 500, 500, 3, octaves, 0)
     mapTest.generateNoiseArray()
     mapTest.mapArbValueToColorValue()
+    mapTest.saveAsPNG('gameImages\ ')
     mapTest.createAndSaveMapAsPNG('gameImages\ ')
     mapTest.saveSeedAsTxtFile()
 

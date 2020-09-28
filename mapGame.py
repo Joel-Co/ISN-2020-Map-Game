@@ -22,25 +22,32 @@ from mapGenerator import *
 def createDirs(*names):
     '''This function takes an arbitrary number of strings and creates
     directories with those names if they do not exist'''
-    
+
     for name in names:
         try:
             os.mkdir(name)
         except:
             pass
 
-def createMap():
+octaves = {0.5 : 2,
+           #1 : 1,
+           2 : 0.5,
+           4 : 0.25,
+           8 : 0.125}
+
+def createMap(name, width, height, freq, octaves, seed = None):
     '''Function to generate the map we'll be using in the game'''
-    gameMap = Map("gameMap", 500, 500, 3)
+    gameMap = Map(name, width, height, freq, octaves, seed)
     gameMap.generateNoiseArray()
     gameMap.mapArbValueToColorValue()
+    gameMap.saveAsPNG('gameImages\ ')
     gameMap.createAndSaveMapAsPNG('gameImages\ ')
     gameMap.saveSeedAsTxtFile('seeds\ ')
-
-
-#We execute the map-creating function.
-createMap()
-
+    
 #Create the folders we will use to store the map(s) and seed(s).
 createDirs("gameImages", "seeds")
+
+#We execute the map-creating function.
+createMap("gameMap", 500, 1000, 5, octaves, 370)
+
 
