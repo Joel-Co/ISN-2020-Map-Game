@@ -55,7 +55,7 @@ class Map(OpenSimplexNoise):
 
         img1.save(path + self.name + '.png')
         
-#Test
+#Test only if this file is run and not imported
 if __name__ == "__main__":
     mapTest = Map("mapTest", 500, 500, 3, 5)
     mapTest.generateNoiseArray()
