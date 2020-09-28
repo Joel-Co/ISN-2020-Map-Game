@@ -36,7 +36,7 @@ class OpenSimplexNoise():
         #Array to store the values we will be using
         #We chose numpy  to learn how to use it and because it is
         #apparently a better choice
-        self.noiseArray = np.empty([width, height])
+        self.noiseArray = np.empty([self.height, self.width])
 
     def generateNoiseArray(self):
         '''This method generates the noise array we will use'''
@@ -45,8 +45,10 @@ class OpenSimplexNoise():
             for x in range(self.width):
                 
                 #This helps with the scale
-                nx = 2*x/self.width
-                ny = 2*y/self.height
+                heightWidthAverage = (self.height + self.width)/2
+                
+                nx = 2 * x / heightWidthAverage
+                ny = 2 * y / heightWidthAverage
 
                 #This line generates the value of each number of the noiseArray list.
                 #Each value of the list is the sum of the value defined by x and y on the different octaves (=different zooms in the noise)
@@ -63,8 +65,8 @@ class OpenSimplexNoise():
                 #In a terrain generation context this is meant to make more complex and natural lookin noise
                 #Though in general we can use it to make different looking noise images
                 #I'm quite proud of this line
-                
-                self.noiseArray[y][x] = sum(j * self.originalNoiseObject.noise2d(i * self.freq * nx, i * self.freq * ny) for i, j in octaves.items())
+
+                self.noiseArray[y][x] = sum(j * self.originalNoiseObject.noise2d(i * self.freq * nx, i * self.freq * ny) for i, j in self.octaves.items())
 
     def mapArbValueToColorValue(self):
         '''
@@ -75,7 +77,7 @@ class OpenSimplexNoise():
         '''
         for j in range(len(self.noiseArray)):
             for i in range(len(self.noiseArray[j])):
-                num = round(255 / 2(sum(j for j in octaves.values())) * self.noiseArray[j][i])  #+ 255/2)
+                num = round(255 / sum(j for i, j in self.octaves.items())) * self.noiseArray[j][i] + 255/2
                 if num > 255:
                     num = 255
                 if num < 0:
@@ -100,7 +102,7 @@ class OpenSimplexNoise():
             for i in range(len(self.noiseArray[j])):
                 img.putpixel( (i,j), numberToGreyColor( int(self.noiseArray[j][i]), 255 ) )
 
-        img.save(path + str(self.name) + '.png')
+        img.save(path + str(self.name) + '_noise.png')
 
     def saveSeedAsTxtFile(self, path = ""):
         '''This method saves the seed in a txt file to use it later'''
@@ -116,7 +118,7 @@ octaves = {1 : 1,
 
 #Test, only if this file is run and not imported
 if __name__ == "__main__":
-    noiseTest = OpenSimplexNoise("noiseTest", 100, 100, 3, octaves)
+    noiseTest = OpenSimplexNoise("noiseTest", 300, 300, 2, octaves, 0)
     noiseTest.generateNoiseArray()
     noiseTest.mapArbValueToColorValue()
     noiseTest.saveAsPNG('gameImages\ ')
