@@ -33,7 +33,9 @@ octaves = {0.5 : 2,
            #1 : 1,
            2 : 0.5,
            4 : 0.25,
-           8 : 0.125}
+           8 : 0.125,
+           16 : 0.0625
+           }
 
 def createMap(name, width, height, freq, octaves, seed = None):
     '''Function to generate the map we'll be using in the game'''
@@ -48,6 +50,6 @@ def createMap(name, width, height, freq, octaves, seed = None):
 createDirs("gameImages", "seeds")
 
 #We execute the map-creating function.
-createMap("gameMap", 500, 1000, 5, octaves, 370)
+createMap("gameMap", 500, 500, 5, octaves)
 
 
